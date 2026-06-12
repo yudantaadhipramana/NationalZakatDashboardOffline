@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>National Zakat Intelligence Command Center</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+body { background: #f0f2f5; padding: 20px; }
+.header { background: linear-gradient(135deg, #092242, #1a4a7a); color: white; padding: 30px 40px; border-radius: 12px; margin-bottom: 30px; }
+.header h1 { font-size: 28px; font-weight: 700; letter-spacing: 1px; }
+.header p { font-size: 14px; opacity: 0.8; margin-top: 8px; max-width: 800px; }
+.scorecards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-bottom: 30px; }
+.scorecard { background: white; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.scorecard .value { font-size: 28px; font-weight: 700; color: #092242; margin-top: 8px; }
+.scorecard .label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+.scorecard .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; margin-top: 6px; }
+.badge-green { background: #e8f5e9; color: #2e7d32; }
+.badge-blue { background: #e3f2fd; color: #1565c0; }
+.section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.section h2 { font-size: 18px; color: #092242; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e8ecf0; }
+.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; }
+.chart-box { position: relative; height: 320px; }
+.chart-box h3 { font-size: 14px; color: #444; margin-bottom: 10px; text-align: center; }
+.full-width { grid-column: 1 / -1; height: 400px; }
+.summary-text { background: #f8f9ff; border-left: 4px solid #092242; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; font-size: 14px; line-height: 1.6; color: #333; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>NATIONAL ZAKAT INTELLIGENCE COMMAND CENTER</h1>
+  <p>AI Executive Summary: Overall performance is exceptional. Zakat collection is on an upward trend, peaking during Ramadan (Mar-Apr) and year-end. Fund distribution ratio is highly efficient at 94.5%, directly impacting over 65,000 beneficiaries. Audit readiness is near perfect at 99%, indicating strong compliance and operational transparency. Social Impact Index stands strong at 92.8, driven by successful economic empowerment and education programs.</p>
+</div>
+
+<div class="scorecards">
+  <div class="scorecard"><div class="label">Total Fund Collected</div><div class="value">Rp361.9M</div><span class="badge badge-green">+12.5%</span></div>
+  <div class="scorecard"><div class="label">Active Donors</div><div class="value">18,500</div><span class="badge badge-green">+8.3%</span></div>
+  <div class="scorecard"><div class="label">Beneficiaries</div><div class="value">65,700</div><span class="badge badge-green">+15.2%</span></div>
+  <div class="scorecard"><div class="label">Fund Distribution</div><div class="value">94.5%</div><span class="badge badge-blue">Efficient</span></div>
+  <div class="scorecard"><div class="label">Audit Readiness</div><div class="value">99%</div><span class="badge badge-green">Excellent</span></div>
+  <div class="scorecard"><div class="label">Social Impact</div><div class="value">92.8</div><span class="badge badge-blue">Strong</span></div>
+</div>
+
+<div class="section">
+  <h2>FUNDRAISING INTELLIGENCE</h2>
+  <div class="chart-grid">
+    <div class="chart-box"><h3>Monthly Collection Trend</h3><canvas id="chart_fundraising_collection"></canvas></div>
+    <div class="chart-box"><h3>Donor Acquisition Funnel</h3><canvas id="chart_fundraising_funnel"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>PROGRAM IMPACT INTELLIGENCE</h2>
+  <div class="chart-grid">
+    <div class="chart-box"><h3>Program Performance (Budget vs Distributed)</h3><canvas id="chart_program_budget"></canvas></div>
+    <div class="chart-box"><h3>Social Return on Investment (SROI)</h3><canvas id="chart_program_sroi"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>BRANCH PERFORMANCE INTELLIGENCE</h2>
+  <div class="chart-grid">
+    <div class="chart-box"><h3>Regional Ranking (Target vs Actual)</h3><canvas id="chart_branch_ranking"></canvas></div>
+    <div class="chart-box"><h3>Distribution Efficiency Score</h3><canvas id="chart_branch_efficiency"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>DONOR 360 ANALYTICS</h2>
+  <div class="chart-grid">
+    <div class="chart-box"><h3>RFM Segmentation</h3><canvas id="chart_donor_rfm"></canvas></div>
+    <div class="chart-box"><h3>Donor Personas</h3><canvas id="chart_donor_persona"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>COMPLIANCE & AUDIT DASHBOARD</h2>
+  <div class="chart-grid">
+    <div class="chart-box full-width" style="height:350px"><canvas id="chart_compliance"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>SOCIAL IMPACT METRICS</h2>
+  <div class="chart-grid">
+    <div class="chart-box full-width" style="height:350px"><canvas id="chart_social"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>PREDICTIVE AI CENTER</h2>
+  <div class="chart-grid">
+    <div class="chart-box full-width" style="height:400px"><h3>AI Donation Forecast (Actual vs Forecast vs Upper Bound)</h3><canvas id="chart_forecast"></canvas></div>
+  </div>
+</div>
+
+<script>
+Chart.register(ChartDataLabels);
+
+function fmt(n) { return n.toLocaleString(); }
+
+// ============ FUNDRAISING ============
+new Chart(document.getElementById('chart_fundraising_collection'), {
+  type: 'bar',
+  data: {
+    labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    datasets: [
+      { label: 'Zakat Maal', data: [12500000,13200000,14500000,18900000,14100000,15600000,16200000,17500000,15800000,16900000,18100000,21000000], backgroundColor: '#092242' },
+      { label: 'Zakat Fitrah', data: [0,0,25000000,32000000,0,0,0,0,0,0,0,0], backgroundColor: '#1a4a7a' },
+      { label: 'Infaq', data: [4500000,4800000,5500000,8900000,5100000,6200000,5800000,6500000,5400000,6100000,6800000,8500000], backgroundColor: '#4a90d9' },
+      { label: 'Sadaqah', data: [2100000,2300000,2800000,4100000,2500000,3100000,2900000,3300000,2700000,3000000,3500000,4200000], backgroundColor: '#7bb3e8' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { datalabels: { display: 'auto', anchor: 'end', align: 'end', font: { size: 9 } } }, scales: { x: { stacked: false }, y: { beginAtZero: true, ticks: { callback: v => 'Rp' + (v/1e6).toFixed(0) + 'M' } } } }
+});
+
+new Chart(document.getElementById('chart_fundraising_funnel'), {
+  type: 'bar',
+  data: {
+    labels: ['Website Visitors','Registered Users','Started Donation','Completed Donation','Recurring Donors'],
+    datasets: [{ label: 'Users', data: [150000,45000,28000,18500,6200], backgroundColor: ['#092242','#1a4a7a','#4a90d9','#7bb3e8','#a8ccee'] }]
+  },
+  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { datalabels: { anchor: 'end', align: 'end', font: { size: 11 }, formatter: v => fmt(v) } }, scales: { x: { beginAtZero: true } } }
+});
+
+// ============ PROGRAM IMPACT ============
+new Chart(document.getElementById('chart_program_budget'), {
+  type: 'bar',
+  data: {
+    labels: ['Economic Empowerment','Education Scholarship','Healthcare Assistance','Disaster Relief','Orphan Support'],
+    datasets: [
+      { label: 'Budget Allocated', data: [45000000,35000000,28000000,15000000,22000000], backgroundColor: '#092242' },
+      { label: 'Funds Distributed', data: [42000000,34500000,27000000,14800000,21500000], backgroundColor: '#4a90d9' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { datalabels: { display: 'auto', anchor: 'end', align: 'end', font: { size: 9 }, formatter: v => 'Rp' + (v/1e6).toFixed(0) + 'M' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => 'Rp' + (v/1e6).toFixed(0) + 'M' } } } }
+});
+
+new Chart(document.getElementById('chart_program_sroi'), {
+  type: 'bar',
+  data: {
+    labels: ['Economic Empowerment','Education Scholarship','Healthcare Assistance','Disaster Relief','Orphan Support'],
+    datasets: [{ label: 'SROI', data: [3.2,4.5,2.8,2.1,3.8], backgroundColor: ['#092242','#1a4a7a','#4a90d9','#7bb3e8','#a8ccee'] }]
+  },
+  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { datalabels: { anchor: 'end', align: 'end', font: { size: 12 }, formatter: v => v + 'x' } }, scales: { x: { beginAtZero: true } } }
+});
+
+// ============ BRANCH PERFORMANCE ============
+new Chart(document.getElementById('chart_branch_ranking'), {
+  type: 'bar',
+  data: {
+    labels: ['Jakarta','West Java','East Java','Central Java','Sumatra'],
+    datasets: [
+      { label: 'Collection Target', data: [85000000,65000000,55000000,45000000,40000000], backgroundColor: '#092242' },
+      { label: 'Actual Collection', data: [92000000,68000000,52000000,48000000,38000000], backgroundColor: '#4a90d9' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { datalabels: { display: 'auto', anchor: 'end', align: 'end', font: { size: 9 }, formatter: v => 'Rp' + (v/1e6).toFixed(0) + 'M' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => 'Rp' + (v/1e6).toFixed(0) + 'M' } } } }
+});
+
+new Chart(document.getElementById('chart_branch_efficiency'), {
+  type: 'bar',
+  data: {
+    labels: ['Jakarta','West Java','East Java','Central Java','Sumatra'],
+    datasets: [{ label: 'Efficiency Score', data: [95,92,88,91,85], backgroundColor: ['#092242','#1a4a7a','#4a90d9','#7bb3e8','#a8ccee'] }]
+  },
+  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { datalabels: { anchor: 'end', align: 'end', font: { size: 12 }, formatter: v => v + '%' } }, scales: { x: { min: 0, max: 100, ticks: { callback: v => v + '%' } } } }
+});
+
+// ============ DONOR 360 ============
+new Chart(document.getElementById('chart_donor_rfm'), {
+  type: 'bar',
+  data: {
+    labels: ['Champions','Loyal','At Risk'],
+    datasets: [{ label: 'Donors', data: [2500,5500,3200], backgroundColor: ['#092242','#4a90d9','#e57373'] }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { datalabels: { anchor: 'end', align: 'end', font: { size: 12 }, formatter: v => fmt(v) } }, scales: { y: { beginAtZero: true } } }
+});
+
+new Chart(document.getElementById('chart_donor_persona'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Corporate (15%)','High Net Worth (25%)','Retail Donors (60%)'],
+    datasets: [{ data: [15,25,60], backgroundColor: ['#092242','#4a90d9','#a8ccee'] }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { datalabels: { color: '#fff', font: { weight: 'bold', size: 14 }, formatter: v => v + '%' }, legend: { position: 'bottom' } } }
+});
+
+// ============ COMPLIANCE ============
+new Chart(document.getElementById('chart_compliance'), {
+  type: 'bar',
+  data: {
+    labels: ['Zakat Compliance Score','Amil Ratio','Audit Readiness','Data Completeness'],
+    datasets: [{ label: 'Score', data: [98,11.5,99,96], backgroundColor: ['#2e7d32','#f57c00','#092242','#1565c0'] }]
+  },
+  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { datalabels: { anchor: 'end', align: 'end', font: { size: 12 }, formatter: v => v + '%' } }, scales: { x: { min: 0, max: 100, ticks: { callback: v => v + '%' } } } }
+});
+
+// ============ SOCIAL IMPACT ============
+new Chart(document.getElementById('chart_social'), {
+  type: 'bar',
+  data: {
+    labels: ['Beneficiaries Impacted','Fund Distribution Ratio','Social Impact Index','Poverty Reduction Impact','Education Access Improvement'],
+    datasets: [{ label: 'Value', data: [65700,94.5,92.8,12,18], backgroundColor: ['#092242','#1a4a7a','#4a90d9','#7bb3e8','#a8ccee'] }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { datalabels: { anchor: 'end', align: 'end', font: { size: 11 }, formatter: (v, ctx) => ctx.dataIndex === 0 ? fmt(v) : v + '%' } }, scales: { y: { beginAtZero: true } } }
+});
+
+// ============ PREDICTIVE AI ============
+new Chart(document.getElementById('chart_forecast'), {
+  type: 'line',
+  data: {
+    labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    datasets: [
+      { label: 'Actual Collection', data: [19100000,20300000,47800000,63900000,21700000,24900000,24900000,27300000,23900000,26000000,28400000,33700000], borderColor: '#092242', backgroundColor: '#09224222', fill: false, tension: 0.3, pointRadius: 4 },
+      { label: 'AI Forecast', data: [18500000,19800000,45000000,60000000,22500000,24000000,25500000,26800000,25000000,27500000,29000000,35000000], borderColor: '#4a90d9', backgroundColor: '#4a90d922', fill: false, tension: 0.3, borderDash: [6,3] },
+      { label: 'Upper Bound', data: [20000000,21500000,50000000,68000000,24000000,26500000,27500000,29000000,27000000,29500000,31000000,38000000], borderColor: '#e57373', backgroundColor: '#e5737322', fill: '-1', tension: 0.3, pointRadius: 3 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { datalabels: { display: 'auto', font: { size: 8 }, formatter: v => 'Rp' + (v/1e6).toFixed(0) + 'M' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => 'Rp' + (v/1e6).toFixed(0) + 'M' } } }, interaction: { mode: 'index', intersect: false } }
+});
+</script>
+</body>
+</html>

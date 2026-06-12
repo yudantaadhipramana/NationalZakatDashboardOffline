@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Zakat Intelligence Command Center</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-72 bg-emerald-900 text-white flex flex-col justify-between hidden md:flex">
+        <div>
+            <!-- Header Sidebar -->
+            <div class="p-6 border-b border-emerald-800 flex items-center space-x-3">
+                <div class="bg-emerald-500 p-2 rounded-lg text-white">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">NATIONAL ZAKAT</h1>
+                    <p class="text-xs text-emerald-300">Intelligence Command Center</p>
+                </div>
+            </div>
+            <!-- Menu Navigasi -->
+            <nav class="p-4 space-y-1">
+                <button onclick="switchTab('exec-summary')" data-tab="exec-summary" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all bg-emerald-700 text-white">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>1. Executive Summary</span>
+                </button>
+                <button onclick="switchTab('fundraising')" data-tab="fundraising" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all text-emerald-100 hover:bg-emerald-800">
+                    <i data-lucide="trending-up" class="w-5 h-5"></i>
+                    <span>2. Fundraising</span>
+                </button>
+                <button onclick="switchTab('program-impact')" data-tab="program-impact" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all text-emerald-100 hover:bg-emerald-800">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    <span>3. Program Impact</span>
+                </button>
+                <button onclick="switchTab('branch-perf')" data-tab="branch-perf" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all text-emerald-100 hover:bg-emerald-800">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                    <span>4. Branch Performance</span>
+                </button>
+                <button onclick="switchTab('donor-360')" data-tab="donor-360" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all text-emerald-100 hover:bg-emerald-800">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>5. Donor 360</span>
+                </button>
+                <button onclick="switchTab('compliance')" data-tab="compliance" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all text-emerald-100 hover:bg-emerald-800">
+                    <i data-lucide="file-check" class="w-5 h-5"></i>
+                    <span>6. Compliance & Audit</span>
+                </button>
+                <button onclick="switchTab('social-impact')" data-tab="social-impact" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all text-emerald-100 hover:bg-emerald-800">
+                    <i data-lucide="globe" class="w-5 h-5"></i>
+                    <span>7. Social Impact</span>
+                </button>
+                <button onclick="switchTab('predictive-ai')" data-tab="predictive-ai" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all text-emerald-100 hover:bg-emerald-800">
+                    <i data-lucide="cpu" class="w-5 h-5"></i>
+                    <span>8. Predictive AI</span>
+                </button>
+            </nav>
+        </div>
+        <!-- Footer Sidebar -->
+        <div class="p-4 border-t border-emerald-800 text-xs text-emerald-300 text-center">
+            &copy; 2026 National Zakat Board
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        <!-- Top Header -->
+        <header class="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <h2 id="current-tab-title" class="text-xl font-bold text-gray-800">1. Executive Summary</h2>
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Live Data</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <p class="text-sm font-semibold text-gray-700">Amil Administrator</p>
+                    <p class="text-xs text-gray-500">Super Admin</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                    AA
+                </div>
+            </div>
+        </header>
+
+        <!-- TAB CONTENTS -->
+        <div class="p-8 space-y-8 flex-1">
+
+            <!-- TAB 1: EXECUTIVE SUMMARY -->
+            <div id="exec-summary" class="tab-content space-y-6">
+                <!-- AI Summary Card -->
+                <div class="bg-gradient-to-r from-emerald-800 to-teal-800 text-white p-6 rounded-2xl shadow-lg flex items-start space-x-4">
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <i data-lucide="sparkles" class="w-6 h-6 text-emerald-300"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-1">AI Executive Summary</h3>
+                        <p class="text-sm text-emerald-100 leading-relaxed">
+                            Overall performance is exceptional. Zakat collection is on an upward trend, peaking during Ramadan (Mar-Apr) and year-end. Fund distribution ratio is highly efficient at 94.5%, directly impacting over 65,000 beneficiaries. Audit readiness is near perfect at 99%, indicating strong compliance and operational transparency. Social Impact Index stands strong at 92.8, driven by successful economic empowerment and education programs.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- KPI Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-semibold text-gray-400 uppercase">Total Collected</span>
+                        <span class="text-xl font-bold text-emerald-600 mt-2">Rp 361,9M</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-semibold text-gray-400 uppercase">Active Donors</span>
+                        <span class="text-xl font-bold text-gray-800 mt-2">18.500</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-semibold text-gray-400 uppercase">Beneficiaries</span>
+                        <span class="text-xl font-bold text-gray-800 mt-2">65.700</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-semibold text-gray-400 uppercase">Distribution Ratio</span>
+                        <span class="text-xl font-bold text-gray-800 mt-2">94.50%</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-semibold text-gray-400 uppercase">Audit Readiness</span>
+                        <span class="text-xl font-bold text-gray-800 mt-2">99%</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-semibold text-gray-400 uppercase">Social Impact Index</span>
+                        <span class="text-xl font-bold text-gray-800 mt-2">92.8</span>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-4">Monthly Collection Trend</h4>
+                        <div class="h-80"><canvas id="execCollectionChart"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-4">Regional Target vs Actual</h4>
+                        <div class="h-80"><canvas id="execRegionalChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: FUNDRAISING -->
+            <div id="fundraising" class="tab-content space-y-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Column: Stacked Bar Chart -->
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm lg:col-span-2">
+                        <h4 class="font-bold text-gray-700 mb-4">Monthly Collection Breakdown</h4>
+                        <div class="h-96"><canvas id="fundBreakdownChart"></canvas></div>
+                    </div>
+                    <!-- Right Column: Persona & Funnel -->
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                            <h4 class="font-bold text-gray-700 mb-4">Donor Persona Composition</h4>
+                            <div class="h-64"><canvas id="fundPersonaChart"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Funnel Stage Table & Chart -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-4">Donation Conversion Funnel</h4>
+                        <div class="h-80"><canvas id="fundFunnelChart"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm overflow-x-auto">
+                        <h4 class="font-bold text-gray-700 mb-4">Funnel Stage Metrics</h4>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase">Funnel Stage</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Users</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Conversion %</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="funnel-table-body">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: PROGRAM IMPACT -->
+            <div id="program-impact" class="tab-content space-y-6 hidden">
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm overflow-x-auto">
+                    <h4 class="font-bold text-gray-700 mb-4">Program Performance Matrix</h4>
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase">Program Name</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Budget Allocated</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Funds Distributed</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Beneficiaries</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">SROI</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Impact Score</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="programs-table-body">
+                            <!-- Dynamic rows -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-4">Budget vs Distributed Funds</h4>
+                        <div class="h-80"><canvas id="progBudgetChart"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-4">Social Return on Investment (SROI)</h4>
+                        <div class="h-80"><canvas id="progSroiChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: BRANCH PERFORMANCE -->
+            <div id="branch-perf" class="tab-content space-y-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm lg:col-span-2">
+                        <h4 class="font-bold text-gray-700 mb-4">Regional Collection Target vs Actual</h4>
+                        <div class="h-96"><canvas id="branchTargetChart"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-4">Regional Efficiency Scores</h4>
+                        <div class="h-96"><canvas id="branchEfficiencyChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm overflow-x-auto">
+                    <h4 class="font-bold text-gray-700 mb-4">Regional Branch Performance Table</h4>
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase">Region</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Target</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Actual</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Distribution</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Ops Cost</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Efficiency Score</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="regional-table-body">
+                            <!-- Dynamic rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 5: DONOR 360 -->
+            <div id="donor-360" class="tab-content space-y-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-4">Cohort Retention (Month 1 vs Month 3)</h4>
+                        <div class="h-80"><canvas id="donorCohortChart"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-4">Donor Segments</h4>
+                        <div class="h-80"><canvas id="donorSegmentChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: COMPLIANCE -->
+            <div id="compliance" class="tab-content space-y-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- KPI Cards -->
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Zakat Compliance</span>
+                            <h5 class="text-2xl font-bold text-emerald-600 mt-1">98%</h5>
+                        </div>
+                        <i data-lucide="shield-check" class="w-8 h-8 text-emerald-500"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Amil Ratio</span>
+                            <h5 class="text-2xl font-bold text-amber-600 mt-1">11.50%</h5>
+                        </div>
+                        <i data-lucide="percent" class="w-8 h-8 text-amber-500"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Audit Readiness</span>
+                            <h5 class="text-2xl font-bold text-blue-600 mt-1">99%</h5>
+                        </div>
+                        <i data-lucide="file-text" class="w-8 h-8 text-blue-500"></i>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-4">Compliance & Audit Radar</h4>
+                        <div class="h-80"><canvas id="complianceRadarChart"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center">
+                        <h4 class="font-bold text-gray-700 mb-4">Compliance Overview</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+                            The National Zakat Board maintains a rigorous compliance framework. Our audit readiness score of 99% reflects near-perfect alignment with national regulatory standards and Islamic jurisprudence.
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="text-sm text-gray-500">Data Completeness</span>
+                                <span class="font-semibold text-gray-800">96%</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="text-sm text-gray-500">Zakat Compliance Score</span>
+                                <span class="font-semibold text-gray-800">98%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: SOCIAL IMPACT -->
+            <div id="social-impact" class="tab-content space-y-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Social Impact Index</span>
+                            <h5 class="text-2xl font-bold text-emerald-600 mt-1">92.8</h5>
+                        </div>
+                        <i data-lucide="award" class="w-8 h-8 text-emerald-500"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Poverty Reduction</span>
+                            <h5 class="text-2xl font-bold text-emerald-600 mt-1">12%</h5>
+                        </div>
+                        <i data-lucide="trending-down" class="w-8 h-8 text-emerald-500"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Education Access Improvement</span>
+                            <h5 class="text-2xl font-bold text-emerald-600 mt-1">18%</h5>
+                        </div>
+                        <i data-lucide="book-open" class="w-8 h-8 text-emerald-500"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <h4 class="font-bold text-gray-700 mb-4">Program Impact Scores</h4>
+                    <div class="h-96"><canvas id="socialImpactChart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- TAB 8: PREDICTIVE AI -->
+            <div id="predictive-ai" class="tab-content space-y-6 hidden">
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <h4 class="font-bold text-gray-700 mb-4">AI Collection Forecast (With Upper Bound Confidence)</h4>
+                    <div class="h-96"><canvas id="aiForecastChart"></canvas></div>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm overflow-x-auto">
+                    <h4 class="font-bold text-gray-700 mb-4">AI Projections Table</h4>
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase">Month</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Actual Collection</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">AI Forecast</th>
+                                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-semibold text-gray-500 uppercase">Upper Bound</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="forecast-table-body">
+                            <!-- Dynamic rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT & DATA HANDLING -->
+    <script>
+        // 1. DATA ENGINE (Hardcoded from spreadsheet)
+        const dbData = {
+            monthlyCollection: [
+                { Month: "Jan", Maal: 12500000, Fitrah: 0, Infaq: 4500000, Sadaqah: 2100000, Total: 19100000 },
+                { Month: "Feb", Maal: 13200000, Fitrah: 0, Infaq: 4800000, Sadaqah: 2300000, Total: 20300000 },
+                { Month: "Mar", Maal: 14500000, Fitrah: 25000000, Infaq: 5500000, Sadaqah: 2800000, Total: 47800000 },
+                { Month: "Apr", Maal: 18900000, Fitrah: 32000000, Infaq: 8900000, Sadaqah: 4100000, Total: 63900000 },
+                { Month: "May", Maal: 14100000, Fitrah: 0, Infaq: 5100000, Sadaqah: 2500000, Total: 21700000 },
+                { Month: "Jun", Maal: 15600000, Fitrah: 0, Infaq: 6200000, Sadaqah: 3100000, Total: 24900000 },
+                { Month: "Jul", Maal: 16200000, Fitrah: 0, Infaq: 5800000, Sadaqah: 2900000, Total: 24900000 },
+                { Month: "Aug", Maal: 17500000, Fitrah: 0, Infaq: 6500000, Sadaqah: 3300000, Total: 27300000 },
+                { Month: "Sep", Maal: 15800000, Fitrah: 0, Infaq: 5400000, Sadaqah: 2700000, Total: 23900000 },
+                { Month: "Oct", Maal: 16900000, Fitrah: 0, Infaq: 6100000, Sadaqah: 3000000, Total: 26000000 },
+                { Month: "Nov", Maal: 18100000, Fitrah: 0, Infaq: 6800000, Sadaqah: 3500000, Total: 28400000 },
+                { Month: "Dec", Maal: 21000000, Fitrah: 0, Infaq: 8500000, Sadaqah: 4200000, Total: 33700000 }
+            ],
+            funnel: [
+                { stage: "Website Visitors", users: 150000 },
+                { stage: "Registered Users", users: 45000 },
+                { stage: "Started Donation", users: 28000 },
+                { stage: "Completed Donation", users: 18500 },
+                { stage: "Recurring Donors", users: 6200 }
+            ],
+            programs: [
+                { name: "Economic Empowerment", budget: 45000000, distributed: 42000000, beneficiaries: 12500, sroi: 3.2, score: 92 },
+                { name: "Education Scholarship", budget: 35000000, distributed: 34500000, beneficiaries: 8500, sroi: 4.5, score: 95 },
+                { name: "Healthcare Assistance", budget: 28000000, distributed: 27000000, beneficiaries: 15200, sroi: 2.8, score: 88 },
+                { name: "Disaster Relief", budget: 15000000, distributed: 14800000, beneficiaries: 25000, sroi: 2.1, score: 85 },
+                { name: "Orphan Support", budget: 22000000, distributed: 21500000, beneficiaries: 4500, sroi: 3.8, score: 94 }
+            ],
+            regional: [
+                { region: "Jakarta", target: 85000000, actual: 92000000, dist: 88000000, ops: 4500000, eff: 95 },
+                { region: "West Java", target: 65000000, actual: 68000000, dist: 65000000, ops: 3800000, eff: 92 },
+                { region: "East Java", target: 55000000, actual: 52000000, dist: 50000000, ops: 3200000, eff: 88 },
+                { region: "Central Java", target: 45000000, actual: 48000000, dist: 46000000, ops: 2900000, eff: 91 },
+                { region: "Sumatra", target: 40000000, actual: 38000000, dist: 35000000, ops: 2500000, eff: 85 }
+            ],
+            cohort: [
+                { cohort: "Q1 Donors", m1: 85, m3: 65 },
+                { cohort: "Q2 Donors", m1: 82, m3: 60 },
+                { cohort: "Q3 Donors", m1: 88, m3: 70 },
+                { cohort: "Q4 Donors", m1: 90, m3: 75 }
+            ],
+            persona: [
+                { name: "Corporate", pct: 15 },
+                { name: "High Net Worth", pct: 25 },
+                { name: "Retail Donors", pct: 60 }
+            ],
+            segments: [
+                { name: "Champions", count: 2500 },
+                { name: "Loyal", count: 5500 },
+                { name: "At Risk", count: 3200 }
+            ],
+            aiForecast: [
+                { Month: "Jan", actual: 19100000, forecast: 18500000, upper: 20000000 },
+                { Month: "Feb", actual: 20300000, forecast: 19800000, upper: 21500000 },
+                { Month: "Mar", actual: 47800000, forecast: 45000000, upper: 50000000 },
+                { Month: "Apr", actual: 63900000, forecast: 60000000, upper: 68000000 },
+                { Month: "May", actual: 21700000, forecast: 22500000, upper: 24000000 },
+                { Month: "Jun", actual: 24900000, forecast: 24000000, upper: 26500000 },
+                { Month: "Jul", actual: 24900000, forecast: 25500000, upper: 27500000 },
+                { Month: "Aug", actual: 27300000, forecast: 26800000, upper: 29000000 },
+                { Month: "Sep", actual: 23900000, forecast: 25000000, upper: 27000000 },
+                { Month: "Oct", actual: 26000000, forecast: 27500000, upper: 29500000 },
+                { Month: "Nov", actual: 28400000, forecast: 29000000, upper: 31000000 },
+                { Month: "Dec", actual: 33700000, forecast: 35000000, upper: 38000000 }
+            ]
+        };
+
+        // Helper function to format currency
+        const formatIDR = (num) => 'Rp ' + num.toLocaleString('id-ID');
+
+        // 2. TAB SWITCHING LOGIC
+        const tabTitles = {
+            'exec-summary': '1. Executive Summary',
+            'fundraising': '2. Fundraising Intelligence',
+            'program-impact': '3. Program Impact Intelligence',
+            'branch-perf': '4. Branch Performance Intelligence',
+            'donor-360': '5. Donor 360 Analytics',
+            'compliance': '6. Compliance & Audit Dashboard',
+            'social-impact': '7. Social Impact Map',
+            'predictive-ai': '8. Predictive AI Center'
+        };
+
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // Show selected tab
+            document.getElementById(tabId).classList.remove('hidden');
+
+            // Update header title
+            document.getElementById('current-tab-title').innerText = tabTitles[tabId];
+
+            // Update active state on sidebar buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('bg-emerald-700', 'text-white');
+                    btn.classList.remove('text-emerald-100', 'hover:bg-emerald-800');
+                } else {
+                    btn.classList.remove('bg-emerald-700', 'text-white');
+                    btn.classList.add('text-emerald-100', 'hover:bg-emerald-800');
+                }
+            });
+
+            // Initialize charts for the active tab
+            renderChartsForTab(tabId);
+        }
+
+        // 3. CHART INITIALIZATION & RENDERING
+        const activeCharts = {};
+
+        function destroyChart(chartId) {
+            if (activeCharts[chartId]) {
+                activeCharts[chartId].destroy();
+                delete activeCharts[chartId];
+            }
+        }
+
+        function renderChartsForTab(tabId) {
+            const months = dbData.monthlyCollection.map(d => d.Month);
+
+            if (tabId === 'exec-summary') {
+                destroyChart('execCollection');
+                destroyChart('execRegional');
+
+                activeCharts['execCollection'] = new Chart(document.getElementById('execCollectionChart'), {
+                    type: 'line',
+                    data: {
+                        labels: months,
+                        datasets: [{
+                            label: 'Total Collection',
+                            data: dbData.monthlyCollection.map(d => d.Total),
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                activeCharts['execRegional'] = new Chart(document.getElementById('execRegionalChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: dbData.regional.map(d => d.region),
+                        datasets: [
+                            {
+                                label: 'Target',
+                                data: dbData.regional.map(d => d.target),
+                                backgroundColor: '#9ca3af'
+                            },
+                            {
+                                label: 'Actual',
+                                data: dbData.regional.map(d => d.actual),
+                                backgroundColor: '#059669'
+                            }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            else if (tabId === 'fundraising') {
+                destroyChart('fundBreakdown');
+                destroyChart('fundPersona');
+                destroyChart('fundFunnel');
+
+                activeCharts['fundBreakdown'] = new Chart(document.getElementById('fundBreakdownChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: months,
+                        datasets: [
+                            { label: 'Zakat Maal', data: dbData.monthlyCollection.map(d => d.Maal), backgroundColor: '#047857' },
+                            { label: 'Zakat Fitrah', data: dbData.monthlyCollection.map(d => d.Fitrah), backgroundColor: '#10b981' },
+                            { label: 'Infaq', data: dbData.monthlyCollection.map(d => d.Infaq), backgroundColor: '#34d399' },
+                            { label: 'Sadaqah', data: dbData.monthlyCollection.map(d => d.Sadaqah), backgroundColor: '#a7f3d0' }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
+                });
+
+                activeCharts['fundPersona'] = new Chart(document.getElementById('fundPersonaChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: dbData.persona.map(d => d.name),
+                        datasets: [{
+                            data: dbData.persona.map(d => d.pct),
+                            backgroundColor: ['#064e3b', '#059669', '#34d399']
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                activeCharts['fundFunnel'] = new Chart(document.getElementById('fundFunnelChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: dbData.funnel.map(d => d.stage),
+                        datasets: [{
+                            label: 'Users',
+                            data: dbData.funnel.map(d => d.users),
+                            backgroundColor: '#059669'
+                        }]
+                    },
+                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            else if (tabId === 'program-impact') {
+                destroyChart('progBudget');
+                destroyChart('progSroi');
+
+                activeCharts['progBudget'] = new Chart(document.getElementById('progBudgetChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: dbData.programs.map(d => d.name),
+                        datasets: [
+                            { label: 'Budget Allocated', data: dbData.programs.map(d => d.budget), backgroundColor: '#9ca3af' },
+                            { label: 'Funds Distributed', data: dbData.programs.map(d => d.distributed), backgroundColor: '#10b981' }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                activeCharts['progSroi'] = new Chart(document.getElementById('progSroiChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: dbData.programs.map(d => d.name),
+                        datasets: [{
+                            label: 'SROI Ratio (x)',
+                            data: dbData.programs.map(d => d.sroi),
+                            backgroundColor: '#d97706'
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            else if (tabId === 'branch-perf') {
+                destroyChart('branchTarget');
+                destroyChart('branchEfficiency');
+
+                activeCharts['branchTarget'] = new Chart(document.getElementById('branchTargetChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: dbData.regional.map(d => d.region),
+                        datasets: [
+                            { label: 'Target', data: dbData.regional.map(d => d.target), backgroundColor: '#9ca3af' },
+                            { label: 'Actual Collection', data: dbData.regional.map(d => d.actual), backgroundColor: '#059669' }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                activeCharts['branchEfficiency'] = new Chart(document.getElementById('branchEfficiencyChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: dbData.regional.map(d => d.region),
+                        datasets: [{
+                            label: 'Efficiency Score',
+                            data: dbData.regional.map(d => d.eff),
+                            backgroundColor: '#3b82f6'
+                        }]
+                    },
+                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            else if (tabId === 'donor-360') {
+                destroyChart('donorCohort');
+                destroyChart('donorSegment');
+
+                activeCharts['donorCohort'] = new Chart(document.getElementById('donorCohortChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: dbData.cohort.map(d => d.cohort),
+                        datasets: [
+                            { label: 'Month 1 Retention', data: dbData.cohort.map(d => d.m1), backgroundColor: '#34d399' },
+                            { label: 'Month 3 Retention', data: dbData.cohort.map(d => d.m3), backgroundColor: '#059669' }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                activeCharts['donorSegment'] = new Chart(document.getElementById('donorSegmentChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: dbData.segments.map(d => d.name),
+                        datasets: [{
+                            data: dbData.segments.map(d => d.count),
+                            backgroundColor: ['#10b981', '#3b82f6', '#ef4444']
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            else if (tabId === 'compliance') {
+                destroyChart('complianceRadar');
+
+                activeCharts['complianceRadar'] = new Chart(document.getElementById('complianceRadarChart'), {
+                    type: 'radar',
+                    data: {
+                        labels: ['Compliance', 'Amil Ratio', 'Audit Readiness', 'Data Completeness'],
+                        datasets: [{
+                            label: 'National Score',
+                            data: [98, 88.5, 99, 96], // Amil Ratio inverted for radar logic (100 - 11.5 = 88.5)
+                            borderColor: '#059669',
+                            backgroundColor: 'rgba(5, 150, 105, 0.2)'
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            else if (tabId === 'social-impact') {
+                destroyChart('socialImpact');
+
+                activeCharts['socialImpact'] = new Chart(document.getElementById('socialImpactChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: dbData.programs.map(d => d.name),
+                        datasets: [{
+                            label: 'Impact Score',
+                            data: dbData.programs.map(d => d.score),
+                            backgroundColor: '#10b981'
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            else if (tabId === 'predictive-ai') {
+                destroyChart('aiForecast');
+
+                activeCharts['aiForecast'] = new Chart(document.getElementById('aiForecastChart'), {
+                    type: 'line',
+                    data: {
+                        labels: months,
+                        datasets: [
+                            { label: 'Actual Collection', data: dbData.aiForecast.map(d => d.actual), borderColor: '#059669', fill: false },
+                            { label: 'AI Forecast', data: dbData.aiForecast.map(d => d.forecast), borderColor: '#3b82f6', borderDash: [5, 5], fill: false },
+                            { label: 'Upper Bound', data: dbData.aiForecast.map(d => d.upper), borderColor: '#93c5fd', borderDash: [2, 2], fill: false }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+        }
+
+        // 4. POPULATE TABLES
+        function populateTables() {
+            // Funnel Table
+            const funnelBody = document.getElementById('funnel-table-body');
+            dbData.funnel.forEach((row, idx) => {
+                const conv = idx === 0 ? '100%' : ((row.users / dbData.funnel[0].users) * 100).toFixed(1) + '%';
+                funnelBody.innerHTML += `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.stage}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${row.users.toLocaleString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${conv}</td>
+                    </tr>
+                `;
+            });
+
+            // Programs Table
+            const progBody = document.getElementById('programs-table-body');
+            dbData.programs.forEach(row => {
+                progBody.innerHTML += `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${formatIDR(row.budget)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${formatIDR(row.distributed)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${row.beneficiaries.toLocaleString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-emerald-600 font-semibold">${row.sroi}x</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900 font-bold">${row.score}</td>
+                    </tr>
+                `;
+            });
+
+            // Regional Table
+            const regBody = document.getElementById('regional-table-body');
+            dbData.regional.forEach(row => {
+                regBody.innerHTML += `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.region}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${formatIDR(row.target)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${formatIDR(row.actual)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${formatIDR(row.dist)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${formatIDR(row.ops)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-emerald-600 font-bold">${row.eff}%</td>
+                    </tr>
+                `;
+            });
+
+            // Forecast Table
+            const foreBody = document.getElementById('forecast-table-body');
+            dbData.aiForecast.forEach(row => {
+                foreBody.innerHTML += `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.Month}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">${formatIDR(row.actual)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-blue-600 font-semibold">${formatIDR(row.forecast)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-400">${formatIDR(row.upper)}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // 5. INITIALIZATION ON LOAD
+        window.onload = function() {
+            lucide.createIcons();
+            populateTables();
+            switchTab('exec-summary'); // Start with Executive Summary
+        };
+    </script>
+</body>
+</html>
+
